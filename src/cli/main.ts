@@ -3,7 +3,7 @@ import {CommandKey} from './CommandKey.ts';
 import chalk from 'chalk';
 
 const logicCli = (command: string | undefined, ...params: string[]) => {
-  if (command == null) {
+  if (command !== undefined) {
     CommandCLI.help();
     return;
   }
