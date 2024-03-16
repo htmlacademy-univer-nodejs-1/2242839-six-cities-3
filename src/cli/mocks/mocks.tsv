@@ -1,17 +1,2 @@
-﻿Уютная квартира в центре Парижа	Уютный дом возле озера в Амстердаме
-Прекрасная квартира с видом на Эйфелеву башню. Идеальное место для отдыха после дня, проведенного в исследовании Парижа.	 Прекрасный дом с садом и видом на озеро. Идеальное место для семейного отдыха или романтического уикенда.
-03/03/2024	03/03/2024
- Paris	Amsterdam
-https://upload.wikimedia.org/wikipedia/ru/thumb/a/a3/Комната_в_отеле%2C_Эдвард_Хоппер%2C_1931.jpg/1200px-Комната_в_отеле%2C_Эдвард_Хоппер%2C_1931.jpg	https://upload.wikimedia.org/wikipedia/ru/thumb/a/a3/Комната_в_отеле%2C_Эдвард_Хоппер%2C_1931.jpg/1200px-Комната_в_отеле%2C_Эдвард_Хоппер%2C_1931.jpg
-null, null, null, null, null, null	null, null, null, null, null, null
-true	true
-false	false
-4.5	5
-apartment	house
-2	3
-4	6
-150	300
-Air conditioning, Washer, Towels	Breakfast, Air conditioning, Washer, Fridge
-link	link
-10	25
-Paris (latitude: 48.85661, longitude: 2.351499)	Amsterdam (latitude: 52.370216, longitude: 4.895168);
+Уютная квартира в центре Парижа	Прекрасная квартира с видом на Эйфелеву башню. Идеальное место для отдыха после дня, проведенного в исследовании Парижа.	03.03.2024	Paris	https://upload.wikimedia.org/wikipedia/ru/thumb/a/a3/Комната_в_отеле%2C_Эдвард_Хоппер%2C_1931.jpg/1200px-Комната_в_отеле%2C_Эдвард_Хоппер%2C_1931.jpg	-,-,-,-,-	true	false	4.5	apartment	2	4	150	Air conditioning,Washer,Towels	link	10	Paris (latitude: 48.85661, longitude: 2.351499)	c599	
+Квартира в центре Гамбурга	Прекрасная квартира с видом на Эйфелеву башню. Идеальное место для отдыха после дня, проведенного в исследовании Парижа.	03.03.2024	Hamburg	https://upload.wikimedia.org/wikipedia/ru/thumb/a/a3/Комната_в_отеле%2C_Эдвард_Хоппер%2C_1931.jpg/1200px-Комната_в_отеле%2C_Эдвард_Хоппер%2C_1931.jpg	-,-,-,-,-	false	false	4.5	apartment	2	4	150	Air conditioning,Washer,Towels	link	10	Hamburg (latitude: 53.550341, longitude: 10.000654)	99a4	

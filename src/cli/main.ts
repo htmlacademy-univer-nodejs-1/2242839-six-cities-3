@@ -2,16 +2,15 @@ import CommandCLI from './CommandCLI.ts';
 import {CommandKey} from './CommandKey.ts';
 import chalk from 'chalk';
 
-const logicCli = (command: string | undefined, ...params: string[]) => {
-  if (command !== undefined) {
+const logicCli = async (command: string | undefined, ...params: string[]) => {
+  if (command === undefined) {
     CommandCLI.help();
     return;
   }
-
   try {
-    CommandCLI.commands[command as CommandKey]();
+    CommandCLI.commands[command as CommandKey](...params);
   } catch {
-    console.log(chalk.red.bold('Uncorrected command'));
+    throw new Error(chalk.red.bold('Uncorrected command'));
   }
 };
 
