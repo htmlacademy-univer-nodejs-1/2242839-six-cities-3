@@ -1,6 +1,6 @@
 import IUser from '../../models/IUser.ts';
 import {UserEntity} from '../../DB/mongo/entities/UserEntity.ts';
-import { DocumentType } from '@typegoose/typegoose';
+import {DocumentType} from '@typegoose/typegoose';
 
 interface IUserService {
   create(user: IUser): Promise<DocumentType<UserEntity>>;

@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import axios from 'axios';
 import {readFile} from 'node:fs/promises';
 import IOffer, {TypeCity, TypeComfortable, TypeLocation, TypeOffer} from '../app/models/IOffer.ts';
-import {inject, interfaces} from 'inversify';
+import {interfaces} from 'inversify';
 import {Component} from '../app/settings/component.ts';
 import IDB from '../app/DB/IDB.ts';
 import IOfferService from '../app/services/interfaces/IOfferService.ts';

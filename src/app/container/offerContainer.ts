@@ -1,6 +1,5 @@
 import {Container} from 'inversify';
 import {types} from '@typegoose/typegoose';
-
 import {OfferEntity, OfferModel} from '../DB/mongo/entities/OfferEntity.ts';
 import {Component} from '../settings/component.ts';
 import IOfferService from '../services/interfaces/IOfferService.ts';

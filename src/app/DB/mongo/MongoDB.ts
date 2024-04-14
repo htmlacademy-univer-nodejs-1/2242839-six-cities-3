@@ -3,7 +3,7 @@ import * as mongoose from 'mongoose';
 import {env} from '../../settings/globalVariables.ts';
 import {Component} from '../../settings/component.ts';
 import AppLogger from '../../logger/Logger.ts';
-import IDB from "../IDB";
+import IDB from '../IDB.ts';
 
 
 @injectable()
