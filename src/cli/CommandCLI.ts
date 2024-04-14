@@ -1,11 +1,24 @@
-import { version as appVersion } from '../../package.json';
-import { writeFile} from 'node:fs';
+import {version as appVersion} from '../../package.json';
+import {writeFile} from 'node:fs';
 import chalk from 'chalk';
 import axios from 'axios';
-import IOffer from '../interfaces/IOffer.ts';
 import {readFile} from 'node:fs/promises';
+import IOffer, {TypeCity, TypeComfortable, TypeLocation, TypeOffer} from '../app/models/IOffer.ts';
+import {inject, interfaces} from 'inversify';
+import {Component} from '../app/settings/component.ts';
+import IDB from '../app/DB/IDB.ts';
+import IOfferService from '../app/services/interfaces/IOfferService.ts';
+import {baseContainer} from '../app/container/baseContainer.ts';
 
-class CommandCLI {
+export default class CommandCLI {
+  private logicApp: interfaces.Container;
+
+  constructor() {
+    (async () => {
+      this.logicApp = await baseContainer();
+    })();
+  }
+
   private readonly defaultText: string = [
     '--version:                   # выводит номер версии',
     '--help:                      # печатает этот текст',
@@ -17,11 +30,12 @@ class CommandCLI {
     '--version': () => this.version(),
     '--help': () => this.help(),
     '--import': (...params: string[]) => {
-      const [filePath] = params;
-      this.importFile(filePath);
+      const [filePath, connectionDB] = params;
+      console.log(this.logicApp);
+      this.importFile(filePath, connectionDB, this.logicApp.get<IDB>(Component.DB), this.logicApp.get<IOfferService>(Component.OfferService));
     },
     '--generate': (...params: string[]) => {
-      const [countParams, pathSaveFile, pathUrl ] = params;
+      const [countParams, pathSaveFile, pathUrl] = params;
       this.generate(+countParams, pathSaveFile, pathUrl);
     },
   };
@@ -34,7 +48,7 @@ class CommandCLI {
     console.log(chalk.green(`Version app: ${appVersion}`));
   }
 
-  public async importFile(filePath: string): Promise<IOffer | void> {
+  public async importFile(filePath: string, connectionDB: string, db: IDB, offerService: IOfferService): Promise<IOffer[] | void> {
     let strData = '';
     try {
       const data = await readFile(filePath);
@@ -43,13 +57,13 @@ class CommandCLI {
       throw new Error(chalk.red.bold('File error!'));
     }
     const offers: IOffer[] = [];
+    await db.connect(connectionDB);
     for (const row of strData.split('\n')) {
       if (row.trim().length === 0) {
         continue;
       }
       const [name,
         description,
-        datePublication,
         city,
         prevPicture,
         images,
@@ -61,43 +75,42 @@ class CommandCLI {
         countGuests,
         price,
         comfortable,
-        author,
         countComments,
         location] = row.split('\t');
       const offer: IOffer = {
         name,
         description,
-        datePublication: new Date(datePublication),
-        city,
+        city: city as TypeCity,
         prevPicture,
-        images: images.split(','),
+        images: images.split(', '),
         rating: +rating,
         premium: JSON.parse(premium),
         favorite: JSON.parse(favorite),
-        type,
-        author,
+        type: type as TypeOffer,
         countComments: +countComments,
-        location,
+        location: location as TypeLocation,
         countRooms: +countRooms,
         countGuests: +countGuests,
         price: +price,
-        comfortable
+        comfortable: comfortable.split(', ') as TypeComfortable[]
       };
       offers.push(offer);
+      await offerService.create(offer);
     }
     console.log(JSON.stringify(offers, null, 4));
+    await db.disconnect();
     return offers;
   }
 
   public async generate(countOffers: number, pathSaveFile: string, pathUrl: string): Promise<void> {
-    const { data: offers } = await axios.get<IOffer[]>(`${pathUrl}?_limit=${countOffers}`);
+    const {data: offers} = await axios.get<IOffer[]>(`${pathUrl}?_limit=${countOffers}`);
     if (countOffers > offers.length) {
       console.log(chalk.yellow.bold(`Max count offers ${offers.length}`));
     }
     const fileContent: string[] = [];
     for (const offer of offers) {
       for (const key of Object.keys(offer)) {
-        fileContent.push(`${offer[key] }\t`);
+        fileContent.push(`${offer[key]}\t`);
       }
       fileContent.push('\n');
     }
@@ -110,5 +123,3 @@ class CommandCLI {
     });
   }
 }
-
-export default new CommandCLI();

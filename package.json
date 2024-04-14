@@ -15,11 +15,12 @@
     "compile": "tsc -p tsconfig.json",
     "clean": "rimraf dist",
     "ts": "ts-node",
-    "cli:dev": "tsx src/cli/main.ts --import ./src/cli/mocks/mocks.tsv",
+    "cli:dev": "tsx src/cli/main.ts --import ./src/cli/mocks/mocks.tsv mongodb://localhost:27017",
     "json-server:dev": "npx json-server ./src/cli/mocks/mock-server-data.json",
     "start:dev": "tsx src/main.ts"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/convict": "^6.1.6",
     "@types/convict-format-with-validator": "^6.0.5",
     "@types/node": "18.16.3",
@@ -40,15 +41,18 @@
     "npm": ">=8"
   },
   "dependencies": {
+    "@typegoose/typegoose": "^11.5.0",
     "axios": "^1.6.7",
+    "bcrypt-ts": "^5.0.2",
     "chalk": "^5.3.0",
     "convict": "^6.2.4",
     "convict-format-with-validator": "^6.2.0",
     "dotenv": "^16.4.5",
     "injectable": "^0.0.1",
     "inversify": "^6.0.2",
+    "mongoose": "7.5.3",
     "pino": "^8.19.0",
-    "reflect-metadata": "^0.2.1",
+    "reflect-metadata": "^0.1.13",
     "ts-transformer-keys": "^0.4.4"
   }
 }
