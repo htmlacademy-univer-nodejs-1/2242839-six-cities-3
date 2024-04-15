@@ -7,6 +7,7 @@ import IDB from '../DB/IDB.ts';
 
 export const containerInit = () => {
   const container = new Container();
+
   container.bind<Application>(Component.App).to(Application).inSingletonScope();
   container.bind(Component.Logger).to(AppLogger).inSingletonScope();
   container.bind<IDB>(Component.DB).to(MongoDB).inSingletonScope();

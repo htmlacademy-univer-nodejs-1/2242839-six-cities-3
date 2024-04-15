@@ -7,7 +7,9 @@ import {OfferService} from '../services/OfferService.ts';
 
 export const offerContainer = () => {
   const container = new Container();
+
   container.bind<types.ModelType<OfferEntity>>(Component.OfferModel).toConstantValue(OfferModel);
-  container.bind<types.ModelType<IOfferService>>(Component.OfferService).toConstantValue(OfferService);
+  container.bind<types.ModelType<IOfferService>>(Component.OfferService).to(OfferService).inSingletonScope();
+
   return container;
 };
