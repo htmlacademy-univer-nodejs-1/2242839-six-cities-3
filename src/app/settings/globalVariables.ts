@@ -23,11 +23,25 @@ const config = convict({
     format: String,
     default: '',
     env: 'SALT'
+  },
+  dbUrl: {
+    doc: 'Connect to DB',
+    format: String,
+    default: 'mongodb://localhost:27017',
+    env: 'DB_URL'
+  },
+  baseUserImg: {
+    doc: 'User img',
+    format: String,
+    default: 'https://www.svgrepo.com/show/532363/user-alt-1.svg',
+    env: 'DB_URL'
   }
 });
 
 export const env = {
   PORT: config.get('port'),
   IP_VALID_ADDRESS: config.get('ip'),
-  SALT: config.get('salt')
+  SALT: config.get('salt'),
+  DB_URL: config.get('dbUrl'),
+  BASE_USER_IMG: config.get('baseUserImg')
 };
