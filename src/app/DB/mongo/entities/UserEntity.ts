@@ -1,10 +1,10 @@
-import {defaultClasses, getModelForClass, modelOptions, prop} from '@typegoose/typegoose';
+import {defaultClasses, getModelForClass, modelOptions, prop, Ref} from '@typegoose/typegoose';
 import IUser, {TypeUser} from '../../../models/IUser.ts';
 import {hash} from 'bcrypt-ts';
 import {env} from '../../../settings/globalVariables.ts';
+import {OfferEntity} from './OfferEntity.ts';
 
-export interface UserEntity extends defaultClasses.Base {
-}
+export interface UserEntity extends defaultClasses.Base {}
 
 @modelOptions({
   schemaOptions: {
@@ -13,7 +13,7 @@ export interface UserEntity extends defaultClasses.Base {
   }
 })
 
-export class UserEntity extends defaultClasses.TimeStamps implements IUser {
+export class UserEntity extends defaultClasses.TimeStamps {
   @prop({unique: true, required: true, type: () => String})
   public email = '';
 
@@ -28,6 +28,9 @@ export class UserEntity extends defaultClasses.TimeStamps implements IUser {
 
   @prop({required: true, default: 'default', type: () => String})
   public typeUser: TypeUser = 'default';
+
+  @prop({ ref: () => OfferEntity, required: true})
+  public comments: Ref<OfferEntity>[] = [];
 
   constructor(userData: IUser) {
     super();

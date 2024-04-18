@@ -1,5 +1,5 @@
 import {inject, injectable} from 'inversify';
-import * as mongoose from 'mongoose';
+import {connect, disconnect} from 'mongoose';
 import {env} from '../../settings/globalVariables.ts';
 import {Component} from '../../settings/component.ts';
 import AppLogger from '../../logger/Logger.ts';
@@ -19,7 +19,7 @@ export default class MongoDB implements IDB {
         return this.logger.logger.warn('You are connected!');
       }
       this.logger.logger.info(`Try to connect DB. URL: ${env.DB_URL}`);
-      await mongoose.connect(url || env.DB_URL);
+      await connect(url || env.DB_URL);
       this._isConnected = true;
       this.logger.logger.info('Connect DB');
     } catch (e: unknown) {
@@ -34,7 +34,7 @@ export default class MongoDB implements IDB {
       return this.logger.logger.warn('You are disconnect!');
     }
     try {
-      await mongoose.disconnect();
+      await disconnect();
       this._isConnected = true;
       this.logger.logger.info('Disconnect DB');
     } catch (e) {

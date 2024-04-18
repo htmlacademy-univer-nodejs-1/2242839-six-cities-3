@@ -1,6 +1,7 @@
-import IOffer, {TypeCity, TypeComfortable, TypeLocation, TypeOffer} from '../../../models/IOffer.ts';
+import {TypeCity, TypeComfortable, TypeLocation, TypeOffer} from '../../../models/IOffer.ts';
 import {defaultClasses, getModelForClass, modelOptions, prop, Ref} from '@typegoose/typegoose';
 import {UserEntity} from './UserEntity.ts';
+import {CommentEntity} from './CommentEntity.ts';
 
 export interface OfferEntity extends defaultClasses.Base {}
 
@@ -11,7 +12,8 @@ export interface OfferEntity extends defaultClasses.Base {}
   }
 })
 
-export class OfferEntity extends defaultClasses.TimeStamps implements IOffer {
+
+export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({ type: () => String, required: true, trim: true })
   public name: string;
 
@@ -24,7 +26,7 @@ export class OfferEntity extends defaultClasses.TimeStamps implements IOffer {
   @prop({ type: () => String, required: true})
   public prevPicture: string;
 
-  @prop({ type: () => [String], required: true, default: []})
+  @prop({ type: () => Array<string>, required: true, default: []})
   public images: string[];
 
   @prop({type: () => Boolean, required: true, default: false})
@@ -36,29 +38,35 @@ export class OfferEntity extends defaultClasses.TimeStamps implements IOffer {
   @prop({type: () => Number, required: true, default: 5})
   public rating: number;
 
-  @prop(({ type: () => String, required: true}))
+  @prop({ type: () => String, required: true})
   public type: TypeOffer;
 
-  @prop(({ type: () => Number, required: true, default: 1}))
+  @prop({ type: () => Number, required: true, default: 1})
   public countRooms: number;
 
-  @prop(({ type: () => Number, required: true, default: 1}))
+  @prop({ type: () => Number, required: true, default: 1})
   public countGuests: number;
 
-  @prop(({ type: () => Number, required: true, default: 100}))
+  @prop({ type: () => Number, required: true, default: 100})
   public price: number;
 
-  @prop(({ type: () => [String], required: true, default: []}))
+  @prop({ type: () => Array<string>, required: true, default: []})
   public comfortable: TypeComfortable[];
 
-  @prop({ ref: UserEntity, required: true})
-  public author: Ref<UserEntity>;
+  @prop({ ref: () => UserEntity, required: true})
+  public authorID: Ref<UserEntity>;
 
-  @prop(({ type: () => Number, required: true, default: 0}))
+  @prop({ type: () => String, required: true})
+  public location: TypeLocation;
+
+  @prop({ref: () => CommentEntity, required: true, default: []})
+  public commentsOffers: Ref<CommentEntity>[];
+
+  @prop({ type: () => Number, required: true, default: 0})
   public countComments: number;
 
-  @prop(({ type: () => String, required: true}))
-  public location: TypeLocation;
+  @prop({ type: () => Number, required: true, default: 0})
+  public countMarks: number;
 }
 
 export const OfferModel = getModelForClass(OfferEntity);
