@@ -32,6 +32,14 @@ export class OfferService implements IOfferService {
     return offer;
   }
 
+  public async find(): Promise<DocumentType<OfferEntity>[]> {
+    return this.offerModel.find();
+  }
+
+  public async changeOffer(id: string, offer: IOffer) {
+    return this.offerModel.updateOne({ _id: id}, offer);
+  }
+
   public async findByID(id: string): Promise<DocumentType<OfferEntity | null>> {
     return this.offerModel.findById(id).populate(['users', 'comments']).exec();
   }
