@@ -10,5 +10,11 @@ interface IUser {
 }
 
 
+interface ILoginUser {
+  email: string;
+  password: string;
+}
+
+
 export default IUser;
-export {TypeUser};
+export {TypeUser, ILoginUser};

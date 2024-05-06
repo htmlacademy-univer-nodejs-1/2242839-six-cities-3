@@ -29,7 +29,6 @@ interface IOffer {
   comfortable: TypeComfortable[],
   countComments: number,
   location: TypeLocation,
-  offerID: string
 }
 
 export default IOffer;

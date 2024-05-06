@@ -7,6 +7,7 @@ interface IOfferService {
   findByID(id: string): Promise<DocumentType<OfferEntity | null>>;
   changeRating(id: string, rate: number): Promise<void>;
   deleteByID(id: string): Promise<DocumentType<OfferEntity>>;
+  find(): Promise<DocumentType<OfferEntity>[]>;
 }
 
 export default IOfferService;
