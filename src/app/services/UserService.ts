@@ -1,10 +1,10 @@
 import {DocumentType, types} from '@typegoose/typegoose';
 import {inject, injectable} from 'inversify';
-import IUser from '../models/IUser.ts';
 import AppLogger from '../logger/Logger.ts';
 import IUserService from './interfaces/IUserService.ts';
 import {UserEntity} from '../DB/mongo/entities/UserEntity.ts';
 import {Component} from '../settings/component.ts';
+import {CreateUserDTO} from '../dto/user/CreateUserDTO.ts';
 
 @injectable()
 export class UserService implements IUserService {
@@ -13,7 +13,7 @@ export class UserService implements IUserService {
     @inject(Component.UserModel) private readonly userModel: types.ModelType<UserEntity>
   ) {}
 
-  public async create(dto: IUser): Promise<DocumentType<UserEntity>> {
+  public async create(dto: CreateUserDTO): Promise<DocumentType<UserEntity>> {
     const user = await new UserEntity(dto);
 
     const result = await this.userModel.create(user);

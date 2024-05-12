@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import IUser from '../../models/IUser.ts';
 import {RequestBody, RequestParams} from '../httpLogic/httpEntities.ts';
+import {CreateUserDTO} from '../../dto/user/CreateUserDTO.ts';
 
-export type CreateUserRequest = Request<RequestParams, RequestBody, IUser>;
+export type CreateUserRequest = Request<RequestParams, RequestBody, CreateUserDTO>;

@@ -1,4 +1,4 @@
 import {Request} from 'express';
-import IOffer from '../../models/IOffer.ts';
+import {CreateOfferDTO} from '../../dto/offer/CreateOfferDTO.ts';
 
-export type CreateOfferRequest = Request<Record<string, unknown>, Record<string, unknown>, IOffer>;
+export type CreateOfferRequest = Request<Record<string, unknown>, Record<string, unknown>, CreateOfferDTO>;

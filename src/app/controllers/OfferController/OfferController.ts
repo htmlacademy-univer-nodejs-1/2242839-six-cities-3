@@ -12,6 +12,12 @@ import {HttpError} from '../httpLogic/httpError.ts';
 import {CreateOfferRequest} from './CreateOfferRequest.ts';
 import {DeleteOfferRequest} from './DeleteOfferRequest.ts';
 import {ChangeOfferRequest} from './ChangeOfferRequest.ts';
+import {ValidateObjectIdMiddleware} from '../../middleware/ValidateObjectIdMiddleware.ts';
+import {ParamOfferId} from './ParamOfferId.ts';
+import {ValidateDtoMiddleware} from '../../middleware/ValidateDtoMiddleware.ts';
+import {CreateOfferDTO} from '../../dto/offer/CreateOfferDTO.ts';
+import {DocumentExistsMiddleware} from '../../middleware/DocumentExistsMiddleware.ts';
+import {UpdateOfferDTO} from '../../dto/offer/UpdateOfferDTO.ts';
 
 @injectable()
 export class OfferController extends BaseController {
@@ -24,15 +30,52 @@ export class OfferController extends BaseController {
     this.logger.logger.info('Register routes for OfferController…');
 
     this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.index });
-    this.addRoute({ path: '/', method: HttpMethod.Post, handler: this.create });
-    this.addRoute({ path: '/', method: HttpMethod.Delete, handler: this.delete });
-    this.addRoute({ path: '/', method: HttpMethod.Put, handler: this.changeOffer });
+    this.addRoute({
+      path: '/:offerId',
+      method: HttpMethod.Get,
+      handler: this.show,
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+      ]
+    });
+    this.addRoute({
+      path: '/:offerId',
+      method: HttpMethod.Delete,
+      handler: this.delete,
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+      ]
+    });
+    this.addRoute({
+      path: '/',
+      method: HttpMethod.Post,
+      handler: this.create,
+      middlewares: [new ValidateDtoMiddleware(CreateOfferDTO)]
+    });
+    this.addRoute({
+      path: '/:offerId',
+      method: HttpMethod.Post,
+      handler: this.changeOffer,
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new ValidateDtoMiddleware(UpdateOfferDTO),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')
+      ]
+    });
   }
 
   public async index(_req: Request, res: Response): Promise<void> {
-    const categories = await this.offerService.find();
-    const responseData = fillDTO(OfferRdo, categories);
+    const offer = await this.offerService.find();
+    const responseData = fillDTO(OfferRdo, offer);
     this.ok(res, responseData);
+  }
+
+  public async show({ params }: Request<ParamOfferId>, res: Response): Promise<void> {
+    const { offerId } = params;
+    const offer = await this.offerService.findById(offerId);
+    this.ok(res, fillDTO(OfferRdo, offer));
   }
 
   public async create(

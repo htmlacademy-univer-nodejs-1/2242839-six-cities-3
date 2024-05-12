@@ -11,6 +11,9 @@ import {fillDTO} from '../../../helpers/fillDTO.ts';
 import {CreateUserRequest} from './CreateUserRequest.ts';
 import {UserRdo} from '../rdo/UserRdo.ts';
 import {LoginUserRequest} from './LoginUserRequest.ts';
+import {ValidateDtoMiddleware} from '../../middleware/ValidateDtoMiddleware.ts';
+import {CreateUserDTO} from '../../dto/user/CreateUserDTO.ts';
+import {LoginUserDTO} from '../../dto/user/LoginUserDTO.ts';
 
 @injectable()
 export class UserController extends BaseController {
@@ -21,8 +24,18 @@ export class UserController extends BaseController {
     super(logger);
 
     this.logger.info('Register routes for UserController…');
-    this.addRoute({ path: '/register', method: HttpMethod.Post, handler: this.create });
-    this.addRoute({ path: '/login', method: HttpMethod.Get, handler: this.login });
+    this.addRoute({
+      path: '/register',
+      method: HttpMethod.Post,
+      handler: this.create,
+      middlewares: [new ValidateDtoMiddleware(CreateUserDTO)]
+    });
+    this.addRoute({
+      path: '/login',
+      method: HttpMethod.Post,
+      handler: this.login,
+      middlewares: [new ValidateDtoMiddleware(LoginUserDTO)]
+    });
   }
 
   public async create(
