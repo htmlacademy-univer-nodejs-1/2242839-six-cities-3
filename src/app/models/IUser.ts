@@ -1,5 +1,5 @@
 
-type TypeUser = 'default' | 'pro';
+export type TypeUser = 'default' | 'pro';
 
 interface IUser {
   name: string;
@@ -9,12 +9,4 @@ interface IUser {
   typeUser: TypeUser;
 }
 
-
-interface ILoginUser {
-  email: string;
-  password: string;
-}
-
-
 export default IUser;
-export {TypeUser, ILoginUser};

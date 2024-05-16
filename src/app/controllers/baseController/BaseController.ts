@@ -5,6 +5,7 @@ import asyncHandler from 'express-async-handler';
 import {IBaseController} from './IBaseController.ts';
 import AppLogger from '../../logger/Logger.ts';
 import {Route} from './route.ts';
+import {IMiddleware} from '../../middleware/IMiddleware.ts';
 
 const DEFAULT_CONTENT_TYPE = 'application/json';
 
@@ -24,9 +25,13 @@ export class BaseController implements IBaseController {
 
   public addRoute(route: Route): void {
     const wrapperAsyncHandler = asyncHandler(route.handler.bind(this));
+    const middlewareHandlers = route.middlewares?.map(
+      (item: IMiddleware) => asyncHandler(item.execute.bind(item))
+    );
+    const allHandlers = middlewareHandlers ? [...middlewareHandlers, wrapperAsyncHandler] : wrapperAsyncHandler;
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    this.router[route.method](route.path, wrapperAsyncHandler);
+    this.router[route.method](route.path, allHandlers);
     this.logger.logger.info(`Route registered: ${route.method.toUpperCase()} ${route.path}`);
   }
 

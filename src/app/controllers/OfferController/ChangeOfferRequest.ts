@@ -1,5 +1,5 @@
 import {Request} from 'express';
-import IOffer from '../../models/IOffer.ts';
+import {UpdateOfferDTO} from '../../dto/offer/UpdateOfferDTO.ts';
 
 
-export type ChangeOfferRequest = Request<Record<string, unknown>, Record<string, unknown>, IOffer & {id: string}>;
+export type ChangeOfferRequest = Request<Record<string, unknown>, Record<string, unknown>, UpdateOfferDTO>;

@@ -1,11 +1,11 @@
 import {DocumentType, Ref, types} from '@typegoose/typegoose';
 import {CommentEntity} from '../DB/mongo/entities/CommentEntity.ts';
-import IComment from '../models/IComment.ts';
 import ICommentService from './interfaces/ICommentService.ts';
 import {inject, injectable} from 'inversify';
 import {Component} from '../settings/component.ts';
 import AppLogger from '../logger/Logger.ts';
 import {OfferEntity} from '../DB/mongo/entities/OfferEntity.ts';
+import {CreateCommentDTO} from '../dto/comment/CreateCommentDTO.ts';
 
 
 @injectable()
@@ -16,12 +16,12 @@ export class CommentService implements ICommentService {
               @inject(Component.CommentModel) private readonly commentModel: types.ModelType<CommentEntity>) {
   }
 
-  public async create(dto: IComment): Promise<DocumentType<CommentEntity>> {
+  public async create(dto: CreateCommentDTO): Promise<DocumentType<CommentEntity>> {
     const comment = await this.commentModel.create(dto);
     const offer: DocumentType<OfferEntity> | null = await this.offerModel.findById(comment.offerID);
 
     if (offer === null) {
-      throw new Error('Cannot find offer');
+      throw new Error('reCannot find offer');
     }
 
     offer.commentsOffers.push(comment.id);

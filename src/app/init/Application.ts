@@ -15,7 +15,8 @@ export default class Application {
               @inject(Component.DB) private readonly db: IDB,
               @inject(Component.ExceptionFilter) private readonly appExceptionFilter: IExceptionFilter,
               @inject(Component.OfferController) private readonly offerControllers: IBaseController,
-              @inject(Component.UserController) private readonly userController: IBaseController) {
+              @inject(Component.UserController) private readonly userController: IBaseController,
+              @inject(Component.CommentController) private readonly commentController: IBaseController) {
     this._server = express();
   }
 
@@ -32,6 +33,7 @@ export default class Application {
     await (async () => {
       this.server.use('/categories', this.offerControllers.router);
       this.server.use('/users', this.userController.router);
+      this.server.use('/commment', this.commentController.router);
     })();
 
     this.logger.logger.info('Controllers init!');

@@ -1,12 +1,13 @@
 import {DocumentType, Ref, types} from '@typegoose/typegoose';
 import {OfferEntity} from '../DB/mongo/entities/OfferEntity.ts';
-import IOffer from '../models/IOffer.ts';
 import IOfferService from './interfaces/IOfferService.ts';
 import {inject, injectable} from 'inversify';
 import {Component} from '../settings/component.ts';
 import AppLogger from '../logger/Logger.ts';
 import {UserEntity} from '../DB/mongo/entities/UserEntity.ts';
 import {CommentEntity} from '../DB/mongo/entities/CommentEntity.ts';
+import {CreateOfferDTO} from '../dto/offer/CreateOfferDTO.ts';
+import {UpdateOfferDTO} from '../dto/offer/UpdateOfferDTO.ts';
 
 @injectable()
 export class OfferService implements IOfferService {
@@ -17,7 +18,7 @@ export class OfferService implements IOfferService {
               @inject(Component.CommentModel) private readonly commentModel: types.ModelType<CommentEntity>) {
   }
 
-  public async create(dto: IOffer): Promise<DocumentType<OfferEntity>> {
+  public async create(dto: CreateOfferDTO): Promise<DocumentType<OfferEntity>> {
     const offer: DocumentType<OfferEntity> = await this.offerModel.create(dto);
     const author: DocumentType<UserEntity> | null = await this.userModel.findById(offer.authorID);
 
@@ -36,8 +37,8 @@ export class OfferService implements IOfferService {
     return this.offerModel.find();
   }
 
-  public async changeOffer(id: string, offer: IOffer) {
-    return this.offerModel.updateOne({ _id: id}, offer);
+  public async changeOffer(id: string, dto: UpdateOfferDTO) {
+    return this.offerModel.updateOne({ _id: id}, dto);
   }
 
   public async findByID(id: string): Promise<DocumentType<OfferEntity | null>> {
