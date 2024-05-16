@@ -14,6 +14,8 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "importHelpers": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "sourceMap": true,
@@ -30,7 +32,8 @@
   },
   "include": [
     "src/**/*.ts"
-  ],
+  ],"skipLibCheck": true,
+  "esModuleInterop": true,
   "exclude": [
     "node_modules",
     "**/*.test.ts"

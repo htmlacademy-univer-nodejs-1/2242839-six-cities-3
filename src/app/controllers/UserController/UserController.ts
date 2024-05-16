@@ -14,9 +14,9 @@ import {LoginUserRequest} from './LoginUserRequest.ts';
 import {ValidateDtoMiddleware} from '../../middleware/ValidateDtoMiddleware.ts';
 import {CreateUserDTO} from '../../dto/user/CreateUserDTO.ts';
 import {LoginUserDTO} from '../../dto/user/LoginUserDTO.ts';
-import {ValidateObjectIdMiddleware} from "../../middleware/ValidateObjectIdMiddleware.ts";
-import {UploadFileMiddleware} from "../../middleware/UploadFileMiddleware.ts";
-import {env} from "../../settings/globalVariables";
+import {ValidateObjectIdMiddleware} from '../../middleware/ValidateObjectIdMiddleware.ts';
+import {UploadFileMiddleware} from '../../middleware/UploadFileMiddleware.ts';
+import {env} from '../../settings/globalVariables.ts';
 
 @injectable()
 export class UserController extends BaseController {
