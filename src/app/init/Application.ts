@@ -33,14 +33,20 @@ export default class Application {
     await (async () => {
       this.server.use('/categories', this.offerControllers.router);
       this.server.use('/users', this.userController.router);
-      this.server.use('/commment', this.commentController.router);
+      this.server.use('/comment', this.commentController.router);
     })();
 
     this.logger.logger.info('Controllers init!');
   }
 
   private async _initMiddleware(): Promise<void> {
-    await this.server.use(express.json());
+    await (async () => {
+      this.server.use(express.json());
+      this.server.use(
+        '/upload',
+        express.static(env.UPLOAD_DIRECTORY)
+      );
+    })();
     this.logger.logger.info('Middleware init!');
   }
 
