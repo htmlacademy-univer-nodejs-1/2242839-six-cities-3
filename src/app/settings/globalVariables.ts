@@ -35,6 +35,12 @@ const config = convict({
     format: String,
     default: 'https://www.svgrepo.com/show/532363/user-alt-1.svg',
     env: 'DB_URL'
+  },
+  uploadDirectory: {
+    doc: 'Directory for files',
+    format: String,
+    default: '',
+    env: 'UPLOAD_DIRECTORY'
   }
 });
 
@@ -43,5 +49,6 @@ export const env = {
   IP_VALID_ADDRESS: config.get('ip'),
   SALT: config.get('salt'),
   DB_URL: config.get('dbUrl'),
-  BASE_USER_IMG: config.get('baseUserImg')
+  BASE_USER_IMG: config.get('baseUserImg'),
+  UPLOAD_DIRECTORY: config.get('uploadDirectory')
 };
