@@ -18,6 +18,7 @@ import {ValidateDtoMiddleware} from '../../middleware/ValidateDtoMiddleware.ts';
 import {CreateOfferDTO} from '../../dto/offer/CreateOfferDTO.ts';
 import {DocumentExistsMiddleware} from '../../middleware/DocumentExistsMiddleware.ts';
 import {UpdateOfferDTO} from '../../dto/offer/UpdateOfferDTO.ts';
+import {PrivateRouteMiddleware} from '../../middleware/PrivateRouteMiddleware.ts';
 
 @injectable()
 export class OfferController extends BaseController {
@@ -44,6 +45,7 @@ export class OfferController extends BaseController {
       method: HttpMethod.Delete,
       handler: this.delete,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ]
@@ -52,13 +54,14 @@ export class OfferController extends BaseController {
       path: '/',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateOfferDTO)]
+      middlewares: [new PrivateRouteMiddleware(), new ValidateDtoMiddleware(CreateOfferDTO)]
     });
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Post,
       handler: this.changeOffer,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new ValidateDtoMiddleware(UpdateOfferDTO),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')
@@ -79,7 +82,7 @@ export class OfferController extends BaseController {
   }
 
   public async create(
-    { body }: CreateOfferRequest,
+    { body, tokenPayload }: CreateOfferRequest,
     res: Response
   ): Promise<void> {
 
@@ -93,7 +96,7 @@ export class OfferController extends BaseController {
       );
     }
 
-    const result = await this.offerService.create(body);
+    const result = await this.offerService.create({ ...body, userId: tokenPayload.id });
     this.created(res, fillDTO(OfferRdo, result));
   }
 

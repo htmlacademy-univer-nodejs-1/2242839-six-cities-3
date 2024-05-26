@@ -3,7 +3,8 @@ import {containerUser} from './userContainer.ts';
 import {containerInit} from './initContainer.ts';
 import {offerContainer} from './offerContainer.ts';
 import {commentContainer} from './commentContainer.ts';
+import {authContainer} from './authContainer.ts';
 
 
-export const baseContainer = () => Container.merge(containerInit(), containerUser(), offerContainer(), commentContainer());
+export const baseContainer = () => Container.merge(containerInit(), containerUser(), offerContainer(), commentContainer(), authContainer());
 

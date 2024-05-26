@@ -1,6 +1,6 @@
 import {defaultClasses, getModelForClass, modelOptions, prop, Ref} from '@typegoose/typegoose';
 import IUser, {TypeUser} from '../../../models/IUser.ts';
-import {hash} from 'bcrypt-ts';
+import {hash, compare} from 'bcrypt-ts';
 import {env} from '../../../settings/globalVariables.ts';
 import {OfferEntity} from './OfferEntity.ts';
 
@@ -47,6 +47,10 @@ export class UserEntity extends defaultClasses.TimeStamps {
 
   private async setPassword(password: string): Promise<string> {
     return hash(password, env.SALT);
+  }
+
+  public async verifyPassword(password: string) {
+    return await compare(password, this.password);
   }
 }
 
