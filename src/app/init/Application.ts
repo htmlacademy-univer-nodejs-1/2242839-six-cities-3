@@ -6,6 +6,8 @@ import IDB from '../DB/IDB.ts';
 import {IExceptionFilter} from '../middleware/exeptionFilter/IExeptionFilter.ts';
 import {IBaseController} from '../controllers/baseController/IBaseController.ts';
 import express, {Express} from 'express';
+import ExceptionFilter from '../auth/filter/ExceptionFilter.ts';
+import {ParseTokenMiddleware} from '../middleware/ParseTokenMiddleware.ts';
 
 @injectable()
 export default class Application {
@@ -16,7 +18,8 @@ export default class Application {
               @inject(Component.ExceptionFilter) private readonly appExceptionFilter: IExceptionFilter,
               @inject(Component.OfferController) private readonly offerControllers: IBaseController,
               @inject(Component.UserController) private readonly userController: IBaseController,
-              @inject(Component.CommentController) private readonly commentController: IBaseController) {
+              @inject(Component.CommentController) private readonly commentController: IBaseController,
+              @inject(Component.AuthExceptionFilter) private readonly authExceptionFilter: IExceptionFilter,) {
     this._server = express();
   }
 
@@ -40,18 +43,22 @@ export default class Application {
   }
 
   private async _initMiddleware(): Promise<void> {
+    const authenticateMiddleware = new ParseTokenMiddleware(env.JWT_SECRET);
+
     await (async () => {
       this.server.use(express.json());
       this.server.use(
         '/upload',
         express.static(env.UPLOAD_DIRECTORY)
       );
+      this.server.use(authenticateMiddleware.execute.bind(authenticateMiddleware));
     })();
     this.logger.logger.info('Middleware init!');
   }
 
   private async _initExceptionFilters(): Promise<void> {
     await this.server.use(this.appExceptionFilter.catch.bind(this.appExceptionFilter));
+    await this.server.use(this.authExceptionFilter.catch.bind(this.authExceptionFilter));
     this.logger.logger.info('App Exceptions init!');
   }
 

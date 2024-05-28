@@ -45,5 +45,6 @@
       "esModuleInterop": true
     },
     "esm": true
-  }
+  },
+  "files": ["./custom.d.ts"]
 }

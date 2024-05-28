@@ -41,7 +41,13 @@ const config = convict({
     format: String,
     default: '',
     env: 'UPLOAD_DIRECTORY'
-  }
+  },
+  jwtSecret: {
+    doc: 'Secret for sign JWT',
+    format: String,
+    env: 'JWT_SECRET',
+    default: ''
+  },
 });
 
 export const env = {
@@ -50,5 +56,6 @@ export const env = {
   SALT: config.get('salt'),
   DB_URL: config.get('dbUrl'),
   BASE_USER_IMG: config.get('baseUserImg'),
-  UPLOAD_DIRECTORY: config.get('uploadDirectory')
+  UPLOAD_DIRECTORY: config.get('uploadDirectory'),
+  JWT_SECRET: config.get('jwtSecret')
 };
