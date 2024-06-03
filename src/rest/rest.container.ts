@@ -8,17 +8,17 @@ import {AppExceptionFilter, ExceptionFilter, HttpErrorExceptionFilter} from '../
 import {ValidationExceptionFilter} from '../shared/libs/rest/exception-filter/validation.exception-filter';
 import {PathTransformer} from '../shared/libs/rest/transform/path-transformer.js';
 
-export function createRestApplicationContainer() {
-  const restApplicationContainer = new Container();
+export function restApplicationContainer() {
+  const container = new Container();
 
-  restApplicationContainer.bind<RestApplication>(Component.RestApplication).to(RestApplication).inSingletonScope();
-  restApplicationContainer.bind<Logger>(Component.Logger).to(PinoLogger).inSingletonScope();
-  restApplicationContainer.bind<Config<RestSchema>>(Component.Config).to(RestConfig).inSingletonScope();
-  restApplicationContainer.bind<DatabaseClient>(Component.DatabaseClient).to(MongoDatabaseClient).inSingletonScope();
-  restApplicationContainer.bind<ExceptionFilter>(Component.ExceptionFilter).to(AppExceptionFilter).inSingletonScope();
-  restApplicationContainer.bind<ExceptionFilter>(Component.HttpExceptionFilter).to(HttpErrorExceptionFilter).inSingletonScope();
-  restApplicationContainer.bind<ExceptionFilter>(Component.ValidationExceptionFilter).to(ValidationExceptionFilter).inSingletonScope();
-  restApplicationContainer.bind<PathTransformer>(Component.PathTransformer).to(PathTransformer).inSingletonScope();
+  container.bind<RestApplication>(Component.RestApplication).to(RestApplication).inSingletonScope();
+  container.bind<Logger>(Component.Logger).to(PinoLogger).inSingletonScope();
+  container.bind<Config<RestSchema>>(Component.Config).to(RestConfig).inSingletonScope();
+  container.bind<DatabaseClient>(Component.DatabaseClient).to(MongoDatabaseClient).inSingletonScope();
+  container.bind<ExceptionFilter>(Component.ExceptionFilter).to(AppExceptionFilter).inSingletonScope();
+  container.bind<ExceptionFilter>(Component.HttpExceptionFilter).to(HttpErrorExceptionFilter).inSingletonScope();
+  container.bind<ExceptionFilter>(Component.ValidationExceptionFilter).to(ValidationExceptionFilter).inSingletonScope();
+  container.bind<PathTransformer>(Component.PathTransformer).to(PathTransformer).inSingletonScope();
 
-  return restApplicationContainer;
+  return container;
 }
